@@ -3,6 +3,7 @@ package com.ocnyang.qbox.app.network;
 import android.os.Environment;
 import android.util.Log;
 
+import com.ocnyang.qbox.app.network.api.AllCategoryApi;
 import com.ocnyang.qbox.app.network.api.ChinaCalendarApi;
 import com.ocnyang.qbox.app.network.api.CityApi;
 import com.ocnyang.qbox.app.network.api.ConstellationApi;
@@ -38,10 +39,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class Network {
 
     public static final String ROOT_URL = "http://v.juhe.cn/";
+    public static final String MOB_ROOT_URL = "http://apicloud.mob.com/";
 
     private static DemoApi demoApi;
     private static NewsApi sNewsApi;
     private static WechatApi mWechatApi;
+    private static AllCategoryApi mAllCategoryApi;
     private static FindBgApi sFindBgApi;
     private static DayJokeApi sDayJokeApi;
     private static ConstellationApi sConstellationApi;
@@ -97,7 +100,7 @@ public class Network {
     public static NewsApi getNewsApi() {
         if (sNewsApi == null) {
             Retrofit retrofit = new Retrofit.Builder()
-                    .client(cacheClient)
+                    .client(okHttpClient)
                     .baseUrl(ROOT_URL)
                     .addConverterFactory(gsonConverterFactory)
                     .addCallAdapterFactory(rxJavaCallAdapterFactory)
@@ -108,17 +111,29 @@ public class Network {
         return sNewsApi;
     }
 
+    public static AllCategoryApi getAllCategoryApi() {
+        if (mAllCategoryApi == null) {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .client(okHttpClient)
+                    .baseUrl(MOB_ROOT_URL)
+                    .addConverterFactory(gsonConverterFactory)
+                    .addCallAdapterFactory(rxJavaCallAdapterFactory)
+                    .build();
+            mAllCategoryApi = retrofit.create(AllCategoryApi.class);
+        }
+        return mAllCategoryApi;
+    }
+
     public static WechatApi getWechatApi() {
         if (mWechatApi == null) {
             Retrofit retrofit = new Retrofit.Builder()
-                    .client(cacheClient)
-                    .baseUrl(ROOT_URL)
+                    .client(okHttpClient)
+                    .baseUrl(MOB_ROOT_URL)
                     .addConverterFactory(gsonConverterFactory)
                     .addCallAdapterFactory(rxJavaCallAdapterFactory)
                     .build();
             mWechatApi = retrofit.create(WechatApi.class);
         }
-        Log.e("oooooo","getwechatApi");
         return mWechatApi;
     }
 
@@ -139,7 +154,7 @@ public class Network {
     public static DayJokeApi getDayJokeApi() {
         if (sDayJokeApi == null) {
             Retrofit retrofit = new Retrofit.Builder()
-                    .client(cacheClient)
+                    .client(okHttpClient)
                     .baseUrl("http://japi.juhe.cn/")
                     .addConverterFactory(gsonConverterFactory)
                     .addCallAdapterFactory(rxJavaCallAdapterFactory)
@@ -167,7 +182,7 @@ public class Network {
     public static TextJokeApi getRandomTextJokeApi(){
         if (sRandomTextJokeApi == null) {
             Retrofit retrofit = new Retrofit.Builder()
-                    .client(cacheClient)
+                    .client(okHttpClient)
                     .baseUrl("http://v.juhe.cn/")
                     .addConverterFactory(gsonConverterFactory)
                     .addCallAdapterFactory(rxJavaCallAdapterFactory)
@@ -180,7 +195,7 @@ public class Network {
     public static TextJokeApi getNewTextJokeApi(){
         if (sTextJokeApi == null) {
             Retrofit retrofit = new Retrofit.Builder()
-                    .client(cacheClient)
+                    .client(okHttpClient)
                     .baseUrl("http://japi.juhe.cn/")
                     .addConverterFactory(gsonConverterFactory)
                     .addCallAdapterFactory(rxJavaCallAdapterFactory)
@@ -194,7 +209,7 @@ public class Network {
     public static ImgJokeApi getRandomImgJokeApi(){
         if (sRandomImgJokeApi == null) {
             Retrofit retrofit = new Retrofit.Builder()
-                    .client(cacheClient)
+                    .client(okHttpClient)
                     .baseUrl("http://v.juhe.cn/")
                     .addConverterFactory(gsonConverterFactory)
                     .addCallAdapterFactory(rxJavaCallAdapterFactory)
@@ -207,7 +222,7 @@ public class Network {
     public static ImgJokeApi getNewImgJokeApi(){
         if (sNewImgJokeApi == null) {
             Retrofit retrofit = new Retrofit.Builder()
-                    .client(cacheClient)
+                    .client(okHttpClient)
                     .baseUrl("http://japi.juhe.cn/")
                     .addConverterFactory(gsonConverterFactory)
                     .addCallAdapterFactory(rxJavaCallAdapterFactory)
